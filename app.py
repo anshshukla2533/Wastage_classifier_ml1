@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 from tensorflow.keras.models import load_model
 
-# Load model
+
 model = load_model("waste_classifier.keras")
 
 classes = [
@@ -30,16 +30,15 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
 
-    # Convert all images to RGB
+   
     image = Image.open(uploaded_file).convert("RGB")
-
+     
     st.image(
-        image,
-        caption="Uploaded Image",
-        width="stretch"
-    )
+    image,
+    caption="Uploaded Image"
+)
 
-    # Preprocess image
+    
     img = image.resize((224, 224))
 
     img_array = np.array(img, dtype=np.float32)
@@ -48,7 +47,7 @@ if uploaded_file:
 
     img_array = np.expand_dims(img_array, axis=0)
 
-    # Prediction
+   
     prediction = model.predict(img_array, verbose=0)[0]
 
     predicted_class = np.argmax(prediction)
@@ -64,14 +63,14 @@ if uploaded_file:
 
     st.divider()
 
-    # Reject uncertain predictions
+    
     if confidence < 70:
         st.warning(
-            f"⚠️ Model is uncertain.\n\nBest Guess: {classes[predicted_class]} ({confidence:.2f}%)"
+            f" Model is uncertain.\n\nBest Guess: {classes[predicted_class]} ({confidence:.2f}%)"
         )
     else:
         st.success(
-            f"✅ Prediction: {classes[predicted_class]}"
+            f" Prediction: {classes[predicted_class]}"
         )
 
     st.info(
